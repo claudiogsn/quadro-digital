@@ -24,21 +24,25 @@ class MovimentacaoForm extends TPage
         // create the form fields
         $movimentacao_id = new THidden('movimentacao_id');
         $dt_mov = new TDate('dt_mov');
-        $system_unit_id = new TDBUniqueSearch('system_unit_id', 'communication', 'SystemUnit', 'id', 'name');
-        $valor_apurado_maq = new TEntry('valor_apurado_maq');
-        $valor_apurado_talao = new TEntry('valor_apurado_talao');
-        $pagamento_maq = new TEntry('pagamento_maq');
-        $pagamento_talao = new TEntry('pagamento_talao');
-        $retecao = new TEntry('retecao');
-        $lucro_preju = new TEntry('lucro_preju');
-        $despesas_valor = new TEntry('despesas_valor');
+        $system_unit_id = TSession::getValue('userunitid');
+        //$system_unit_id = new TDBUniqueSearch('system_unit_id', 'communication', 'SystemUnit', 'id', 'name');
+        $valor_apurado_maq = new TNumeric('valor_apurado_maq', 2, ',', '.', true);
+        $valor_apurado_talao = new TNumeric('valor_apurado_tala', 2, ',', '.', true);
+        $pagamento_maq = new TNumeric('pagamento_maq', 2, ',', '.', true);
+        $pagamento_talao = new TNumeric('pagamento_talao', 2, ',', '.', true);
+        $retecao = new TNumeric('retecao', 2, ',', '.', true);
+        $lucro_preju = new TNumeric('lucro_preju', 2, ',', '.', true);
+        $despesas_valor = new TNumeric('despesas_valor', 2, ',', '.', true);
         $despesas_justificativa = new TEntry('despesas_justificativa');
-        $just_edicao = new THidden('just_edicao');
+        $just_edicao = new THidden('$just_edicao');
         $editado = new THidden('editado');
         $system_user_id = new TLabel('system_user_id', 'communication', 'SystemUser', 'id', 'name');
         $user_edit = new THidden('user_edit', 'communication', 'SystemUser', 'id', 'name');
         $created_at = new THidden('created_at');
         $edited_at = new THidden('edited_at');
+        $userid_session = TSession::getValue('userid');
+
+        //Validations
 
 
         // add the fields
@@ -55,13 +59,13 @@ class MovimentacaoForm extends TPage
         $this->form->addFields( [ new TLabel('Despesas Justificativa') ], [ $despesas_justificativa ] );
         $this->form->addFields( [ new TLabel('') ], [ $just_edicao ] );
         $this->form->addFields( [ new TLabel('') ], [ $editado ] );
-        $this->form->addFields( [ new TLabel('') ], [ $system_user_id ] );
+        $this->form->addFields( [ new TLabel('') ], [$userid_session] );
         $this->form->addFields( [ new TLabel('') ], [ $user_edit ] );
         $this->form->addFields( [ new TLabel('') ], [ $created_at ] );
         $this->form->addFields( [ new TLabel('') ], [ $edited_at ] );
 
         $dt_mov->addValidation('Data Movimento', new TRequiredValidator);
-        $system_unit_id->addValidation('Unidade', new TRequiredValidator);
+        //$system_unit_id->addValidation('Unidade', new TRequiredValidator);
         $valor_apurado_maq->addValidation('Valor Apurado Maq', new TRequiredValidator);
         $valor_apurado_talao->addValidation('Valor Apurado Talao', new TRequiredValidator);
         $pagamento_maq->addValidation('Pagamento Maq', new TRequiredValidator);
@@ -72,23 +76,23 @@ class MovimentacaoForm extends TPage
 
 
         // set sizes
-        $movimentacao_id->setSize('100%');
-        $dt_mov->setSize('100%');
-        $system_unit_id->setSize('100%');
-        $valor_apurado_maq->setSize('100%');
-        $valor_apurado_talao->setSize('100%');
-        $pagamento_maq->setSize('100%');
-        $pagamento_talao->setSize('100%');
-        $retecao->setSize('100%');
-        $lucro_preju->setSize('100%');
-        $despesas_valor->setSize('100%');
-        $despesas_justificativa->setSize('100%');
-        $just_edicao->setSize('100%');
-        $editado->setSize('100%');
-        $system_user_id->setSize('100%');
-        $user_edit->setSize('100%');
-        $created_at->setSize('100%');
-        $edited_at->setSize('100%');
+        $movimentacao_id->setSize('50%');
+        $dt_mov->setSize('50%');
+        $system_unit_id->setSize('50%');
+        $valor_apurado_maq->setSize('50%');
+        $valor_apurado_talao->setSize('50%');
+        $pagamento_maq->setSize('50%');
+        $pagamento_talao->setSize('50%');
+        $retecao->setSize('50%');
+        $lucro_preju->setSize('50%');
+        $despesas_valor->setSize('50%');
+        $despesas_justificativa->setSize('50%');
+        $just_edicao->setSize('50%');
+        $editado->setSize('50%');
+        $system_user_id->setSize('05%');
+        $user_edit->setSize('50%');
+        $created_at->setSize('50%');
+        $edited_at->setSize('50%');
 
 
 
