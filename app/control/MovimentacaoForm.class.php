@@ -34,13 +34,13 @@ class MovimentacaoForm extends TPage
         $lucro_preju = new TNumeric('lucro_preju', 2, ',', '.', true);
         $despesas_valor = new TNumeric('despesas_valor', 2, ',', '.', true);
         $despesas_justificativa = new TEntry('despesas_justificativa');
-        $just_edicao = new THidden('$just_edicao');
+        $just_edicao = new THidden('just_edicao');
         $editado = new THidden('editado');
-        $system_user_id = new TLabel('system_user_id', 'communication', 'SystemUser', 'id', 'name');
+        $system_user_id = TSession::getValue('userid');;
         $user_edit = new THidden('user_edit', 'communication', 'SystemUser', 'id', 'name');
         $created_at = new THidden('created_at');
         $edited_at = new THidden('edited_at');
-        $userid_session = TSession::getValue('userid');
+        //$userid_session = TSession::getValue('userid');
 
         //Validations
 
@@ -48,7 +48,7 @@ class MovimentacaoForm extends TPage
         // add the fields
         $this->form->addFields( [ new TLabel('') ], [ $movimentacao_id ] );
         $this->form->addFields( [ new TLabel('Data Movimento') ], [ $dt_mov ] );
-        $this->form->addFields( [ new TLabel('Unidade') ], [ $system_unit_id ] );
+        $this->form->addFields( [ new THidden('system_unit_id') ], [ $system_unit_id ] );
         $this->form->addFields( [ new TLabel('Valor Apurado Maq') ], [ $valor_apurado_maq ] );
         $this->form->addFields( [ new TLabel('Valor Apurado Talao') ], [ $valor_apurado_talao ] );
         $this->form->addFields( [ new TLabel('Pagamento Maq') ], [ $pagamento_maq ] );
@@ -59,7 +59,7 @@ class MovimentacaoForm extends TPage
         $this->form->addFields( [ new TLabel('Despesas Justificativa') ], [ $despesas_justificativa ] );
         $this->form->addFields( [ new TLabel('') ], [ $just_edicao ] );
         $this->form->addFields( [ new TLabel('') ], [ $editado ] );
-        $this->form->addFields( [ new TLabel('') ], [$userid_session] );
+        $this->form->addFields( [ new THidden('system_user_id') ], [$system_user_id ] );
         $this->form->addFields( [ new TLabel('') ], [ $user_edit ] );
         $this->form->addFields( [ new TLabel('') ], [ $created_at ] );
         $this->form->addFields( [ new TLabel('') ], [ $edited_at ] );
@@ -72,13 +72,13 @@ class MovimentacaoForm extends TPage
         $pagamento_talao->addValidation('Pagamento Talao', new TRequiredValidator);
         $retecao->addValidation('Retecao', new TRequiredValidator);
         $lucro_preju->addValidation('Lucro Preju', new TRequiredValidator);
-        $system_user_id->addValidation('', new TRequiredValidator);
+        //$system_user_id->addValidation('', new TRequiredValidator);
 
 
         // set sizes
         $movimentacao_id->setSize('50%');
         $dt_mov->setSize('50%');
-        $system_unit_id->setSize('50%');
+        //$system_unit_id->setSize('50%');
         $valor_apurado_maq->setSize('50%');
         $valor_apurado_talao->setSize('50%');
         $pagamento_maq->setSize('50%');
@@ -89,7 +89,7 @@ class MovimentacaoForm extends TPage
         $despesas_justificativa->setSize('50%');
         $just_edicao->setSize('50%');
         $editado->setSize('50%');
-        $system_user_id->setSize('05%');
+        //$system_user_id->setSize('50%');
         $user_edit->setSize('50%');
         $created_at->setSize('50%');
         $edited_at->setSize('50%');
