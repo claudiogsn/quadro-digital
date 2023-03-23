@@ -1,4 +1,7 @@
 <?php
+
+use Adianti\Registry\TSession;
+
 /**
  * MovimentacaoForm Form
  * @author  Claudio Gomes
@@ -24,7 +27,7 @@ class MovimentacaoForm extends TPage
         // create the form fields
         $movimentacao_id = new THidden('movimentacao_id');
         $dt_mov = new TDate('dt_mov');
-        $system_unit_id = TSession::getValue('userunitid');
+        $system_unit_id = new THidden('system_unit_id');
         //$system_unit_id = new TDBUniqueSearch('system_unit_id', 'communication', 'SystemUnit', 'id', 'name');
         $valor_apurado_maq = new TNumeric('valor_apurado_maq', 2, ',', '.', true);
         $valor_apurado_talao = new TNumeric('valor_apurado_tala', 2, ',', '.', true);
@@ -36,8 +39,8 @@ class MovimentacaoForm extends TPage
         $despesas_justificativa = new TEntry('despesas_justificativa');
         $just_edicao = new THidden('just_edicao');
         $editado = new THidden('editado');
-        $system_user_id = TSession::getValue('userid');;
-        $user_edit = new THidden('user_edit', 'communication', 'SystemUser', 'id', 'name');
+        $system_user_id = new THidden('system_user_id');
+        $user_edit = new THidden('user_edit');
         $created_at = new THidden('created_at');
         $edited_at = new THidden('edited_at');
         //$userid_session = TSession::getValue('userid');
@@ -48,7 +51,7 @@ class MovimentacaoForm extends TPage
         // add the fields
         $this->form->addFields( [ new TLabel('') ], [ $movimentacao_id ] );
         $this->form->addFields( [ new TLabel('Data Movimento') ], [ $dt_mov ] );
-        $this->form->addFields( [ new THidden('system_unit_id') ], [ $system_unit_id ] );
+        $this->form->addFields( [ new THidden('unidade') ], [ $system_unit_id ] );
         $this->form->addFields( [ new TLabel('Valor Apurado Maq') ], [ $valor_apurado_maq ] );
         $this->form->addFields( [ new TLabel('Valor Apurado Talao') ], [ $valor_apurado_talao ] );
         $this->form->addFields( [ new TLabel('Pagamento Maq') ], [ $pagamento_maq ] );
@@ -59,7 +62,7 @@ class MovimentacaoForm extends TPage
         $this->form->addFields( [ new TLabel('Despesas Justificativa') ], [ $despesas_justificativa ] );
         $this->form->addFields( [ new TLabel('') ], [ $just_edicao ] );
         $this->form->addFields( [ new TLabel('') ], [ $editado ] );
-        $this->form->addFields( [ new THidden('system_user_id') ], [$system_user_id ] );
+        $this->form->addFields( [ new THidden('user') ], [$system_user_id ] );
         $this->form->addFields( [ new TLabel('') ], [ $user_edit ] );
         $this->form->addFields( [ new TLabel('') ], [ $created_at ] );
         $this->form->addFields( [ new TLabel('') ], [ $edited_at ] );
@@ -74,25 +77,31 @@ class MovimentacaoForm extends TPage
         $lucro_preju->addValidation('Lucro Preju', new TRequiredValidator);
         //$system_user_id->addValidation('', new TRequiredValidator);
 
+        // add valor das sessions
+        $unidade = TSession::getValue('userunitid');
+        $system_unit_id->setValue($unidade);
+        $usuario = TSession::getValue('userid');
+        $system_user_id->setValue($usuario);
+
 
         // set sizes
-        $movimentacao_id->setSize('50%');
-        $dt_mov->setSize('50%');
-        //$system_unit_id->setSize('50%');
-        $valor_apurado_maq->setSize('50%');
-        $valor_apurado_talao->setSize('50%');
-        $pagamento_maq->setSize('50%');
-        $pagamento_talao->setSize('50%');
-        $retecao->setSize('50%');
-        $lucro_preju->setSize('50%');
-        $despesas_valor->setSize('50%');
-        $despesas_justificativa->setSize('50%');
-        $just_edicao->setSize('50%');
-        $editado->setSize('50%');
-        //$system_user_id->setSize('50%');
-        $user_edit->setSize('50%');
-        $created_at->setSize('50%');
-        $edited_at->setSize('50%');
+        $movimentacao_id->setSize('25%');
+        $dt_mov->setSize('25%');
+        //$system_unit_id->setSize('25%');
+        $valor_apurado_maq->setSize('25%');
+        $valor_apurado_talao->setSize('25%');
+        $pagamento_maq->setSize('25%');
+        $pagamento_talao->setSize('25%');
+        $retecao->setSize('25%');
+        $lucro_preju->setSize('25%');
+        $despesas_valor->setSize('25%');
+        $despesas_justificativa->setSize('25%');
+        $just_edicao->setSize('25%');
+        $editado->setSize('25%');
+        $system_user_id->setSize('25%');
+        $user_edit->setSize('25%');
+        $created_at->setSize('25%');
+        $edited_at->setSize('25%');
 
 
 
