@@ -29,8 +29,8 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         $movimentacao_id = new THidden('movimentacao_id');
         $dt_mov = new TDate('dt_mov');
         $system_unit_id = new THidden('system_unit_id');
-        $valor_apurado_maq = new TNumeric('valor_apurado_maq', 2, ',', '.', true, ['autocomplete' => 'off']);
-        $valor_apurado_talao = new TNumeric('valor_apurado_tala', 2, ',', '.', true, ['autocomplete' => 'off']);
+        $valor_apurado_maq = new TNumeric('valor_apurado_maq', 2, ',', '.', true);
+        $valor_apurado_talao = new TNumeric('valor_apurado_talao', 2, ',', '.', true);
         $pagamento_maq = new TNumeric('pagamento_maq', 2, ',', '.', true);
         $pagamento_talao = new TNumeric('pagamento_talao', 2, ',', '.', true);
         $retecao = new TNumeric('retecao', 2, ',', '.', true);
