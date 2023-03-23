@@ -152,8 +152,8 @@ class MovimentacaoForm extends \Adianti\Control\TPage
             $object = new Movimentacao;  // create an empty object
             $object->fromArray( (array) $data); // load the object with data
             $object->dt_mov = DateTime::createFromFormat('d/m/Y', $object->dt_mov)->format( 'Y-m-d' );
-            $idmovimento = $object->dt_mov.$object->system_unit_id;
-            $object->movimentacao_id = str_replace('-','',$idmovimento);
+            //$idmovimento = $object->dt_mov.$object->system_unit_id;
+            //$object->movimentacao_id = str_replace('-','',$idmovimento);
             $object->store(); // save the object
 
             // get the generated movimentacao_id
