@@ -1,5 +1,10 @@
 /** General **/
 @import url('https://fonts.cdnfonts.com/css/dosis');
+
+obrigatorio{
+    color: #b92c28;
+    font: condensed;
+}
 html, body
 {
     height: 95.5%;

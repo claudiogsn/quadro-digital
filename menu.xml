@@ -91,21 +91,25 @@
     </menu>
   </menuitem>
   <menuitem label="Movimentação">
-    <icon>fa:list fa-fw</icon>
+    <icon>fas:chart-area fa-fw fa-fw</icon>
     <menu>
       <menuitem label="Lançar Movimento">
         <action>MovimentacaoForm</action>
-        <icon>fas:money-bill-alt fa-fw</icon>
+        <icon>fas:money-bill-alt fa-fw fa-fw</icon>
       </menuitem>
       <menuitem label="Listar Movimentações">
         <action>MovimentacaoList</action>
-        <icon>fa:list fa-fw</icon>
+        <icon>fas:list fa-fw fa-fw</icon>
       </menuitem>
-      <menuitem label="MovimentacaoFormView">
-        <action>MovimentacaoFormView</action>
-        <icon>fa:list fa-fw</icon>
+      <menuitem label="MovimentacaoEdit">
+        <action>MovimentacaoEdit</action>
+        <icon>fas:edit fa-fw fa-fw</icon>
       </menuitem>
     </menu>
+  </menuitem>
+  <menuitem label="Mudar Unidade">
+    <action>MudarFilial#method=onInputDialog</action>
+    <icon>fas:university fa-fw fa-fw</icon>
   </menuitem>
   <menuitem label="Logout">
     <action>LoginForm#method=onLogout#static=1</action>

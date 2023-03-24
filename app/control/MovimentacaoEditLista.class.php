@@ -6,7 +6,7 @@ use Adianti\Registry\TSession;
  * MovimentacaoForm Form
  * @author  Claudio Gomes
  */
-class MovimentacaoForm extends \Adianti\Control\TPage
+class MovimentacaoEditLista extends \Adianti\Control\TPage
 {
     protected $form; // form
 
@@ -17,12 +17,12 @@ class MovimentacaoForm extends \Adianti\Control\TPage
     public function __construct( $param )
     {
         parent::__construct();
-        //parent::setTargetContainer('adianti_right_panel');
+        parent::setTargetContainer('adianti_right_panel');
 
 
         // creates the form
         $this->form = new BootstrapFormBuilder('form_Movimentacao');
-        $this->form->setFormTitle('Lançar Movimentação');
+        $this->form->setFormTitle('Editar Movimentação');
 
 
         // create the form fields
@@ -37,16 +37,24 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         $lucro_preju = new TNumeric('lucro_preju', 2, ',', '.', true);
         $despesas_valor = new TNumeric('despesas_valor', 2, ',', '.', true);
         $despesas_justificativa = new TEntry('despesas_justificativa');
-        $just_edicao = new THidden('just_edicao');
+        $just_edicao = new TEntry('just_edicao');
         $editado = new THidden('editado');
         $system_user_id = new THidden('system_user_id');
         $user_edit = new THidden('user_edit');
         $created_at = new THidden('created_at');
         $edited_at = new THidden('edited_at');
 
+
+
+
+        //definir icones
+        $just_edicao->setInnerIcon(new TImage('fa:money blue'), 'left');
+        $valor_apurado_talao->setInnerIcon(new TImage('fa:money black'), 'left');
+        $pagamento_maq->setInnerIcon(new TImage('fa:money black'), 'left');
+        $pagamento_talao->setInnerIcon(new TImage('fa:money black'), 'left');
+
         //Validations
         $dt_mov->setMask('dd/mm/yyyy');
-
 
 
 
@@ -58,21 +66,32 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         $label->style='text-align:center;width:85%';
         $this->form->addContent( [$label] );
         $label = new TLabel('', '#7D78B6', 12, 'bi');
-        $label->style='text-align:center;border-bottom:3px solid #009688;width:100%';
+        $label->style='text-align:center;border-bottom:1px solid #c0c0c0;width:100%';
         $this->form->addContent( [$label] );
         $label = new TLabel('', '#000000', 12, 'bi');
         $label->style='text-align:center;width:85%';
         $this->form->addContent( [$label] );
         $this->form->addFields( [ new TLabel('Apurado Máquina: ') ], [ $valor_apurado_maq ],[ new TLabel('Apurado Talão:') ], [ $valor_apurado_talao ] );
         $this->form->addFields( [ new TLabel('Pagamento Máquina: ') ], [ $pagamento_maq ],[ new TLabel('Pagamento Talão: ') ], [ $pagamento_talao ] );
-        $this->form->addFields( [ new TLabel('Retenção:') ], [ $retecao ],[ new TLabel('Lucro: ') ], [ '= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} + {pagamento_talao}' ] );
+        $this->form->addFields( [ new TLabel('Retenção:') ], [ $retecao ],[ new TLabel('Lucro: ') ], [ $lucro_preju ] );
         $this->form->addFields( [ new TLabel('Valor Despesas: ') ], [ $despesas_valor ],[ new TLabel('Justificativa Despesas: ') ], [ $despesas_justificativa ] );
-        $this->form->addFields( [ new TLabel('','#FF0000','14') ], [ $just_edicao ] );
+        $label = new TLabel('', '#000000', 12, 'bi');
+        $label->style='text-align:center;width:85%';
+        $this->form->addContent( [$label] );
+        $label = new TLabel('', '#000000', 12, 'bi');
+        $label->style='text-align:center;width:85%';
+        $this->form->addContent( [$label] );
+        $just = new TLabel('Justificativa Edição:','#FF0000',14,'');
+        $just ->style='text-align:center;';
+        $this->form->addFields([$just],[ $just_edicao ] );
+        //$this->form->addFields( [ new TLabel('Justificativa Edição:','#FF0000','14') ], [ $just_edicao ] );
         $this->form->addFields( [ new TLabel('') ], [ $editado ] );
         $this->form->addFields( [ new THidden('user') ], [$system_user_id ] );
         $this->form->addFields( [ new TLabel('') ], [ $user_edit ] );
         $this->form->addFields( [ new TLabel('') ], [ $created_at ] );
         $this->form->addFields( [ new TLabel('') ], [ $edited_at ] );
+
+
 
         $dt_mov->addValidation('Data Movimento', new TRequiredValidator);
         $valor_apurado_maq->addValidation('Valor Apurado Maq', new TRequiredValidator);
@@ -81,6 +100,8 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         $pagamento_talao->addValidation('Pagamento Talao', new TRequiredValidator);
         $retecao->addValidation('Retecao', new TRequiredValidator);
         $lucro_preju->addValidation('Lucro Preju', new TRequiredValidator);
+        $just_edicao->addValidation('Justificativa Edição', new TRequiredValidator);
+
 
         // add valor das sessions
         $unidade = TSession::getValue('userunitid');
@@ -91,21 +112,21 @@ class MovimentacaoForm extends \Adianti\Control\TPage
 
         // set sizes
         $movimentacao_id->setSize('25%');
-        $dt_mov->setSize('25%');
+        $dt_mov->setSize('50%');
 
-        $valor_apurado_maq->setSize('40%');
-        $valor_apurado_talao->setSize('40%');
-        $pagamento_maq->setSize('40%');
-        $pagamento_talao->setSize('40%');
-        $retecao->setSize('40%');
-        $lucro_preju->setSize('40%');
-        $despesas_valor->setSize('40%');
-        $despesas_justificativa->setSize('40%');
-        $just_edicao->setSize('40%');
-        $editado->setSize('40%');
-        $user_edit->setSize('40%');
-        $created_at->setSize('40%');
-        $edited_at->setSize('40%');
+        $valor_apurado_maq->setSize('80%');
+        $valor_apurado_talao->setSize('80%');
+        $pagamento_maq->setSize('80%');
+        $pagamento_talao->setSize('80%');
+        $retecao->setSize('80%');
+        $lucro_preju->setSize('80%');
+        $despesas_valor->setSize('80%');
+        $despesas_justificativa->setSize('80%');
+        $just_edicao->setSize('80%');
+        $editado->setSize('80%');
+        $user_edit->setSize('80%');
+        $created_at->setSize('80%');
+        $edited_at->setSize('80%');
 
         // desativar complete
         $valor_apurado_maq->setProperty('autocomplete', 'off');
@@ -129,12 +150,12 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         // create the form actions
         $btn = $this->form->addAction(_t('Save'), new TAction([$this, 'onSave']), 'fa:save');
         $btn->class = 'btn btn-sm btn-primary';
-        $this->form->addActionLink(_t('New'),  new TAction([$this, 'onClear']), 'fa:eraser red');
+        $this->form->addActionLink('Fechar',  new TAction([$this, 'onClear']), 'fas:sign-out-alt red');
 
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
-        $container->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
+        //$container->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
         $container->add($this->form);
 
         parent::add($container);
@@ -200,7 +221,7 @@ class MovimentacaoForm extends \Adianti\Control\TPage
      */
     public function onClear( $param )
     {
-        $this->form->clear(TRUE);
+        AdiantiCoreApplication::gotoPage('MovimentacaoList');
     }
 
     /**

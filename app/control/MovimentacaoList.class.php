@@ -18,28 +18,30 @@ class MovimentacaoList extends TPage
     {
         parent::__construct();
         
-        $this->setDatabase('table');            // defines the database
+        $this->setDatabase('communication');            // defines the database
         $this->setActiveRecord('Movimentacao');   // defines the active record
-        $this->setDefaultOrder('idmovimentacao', 'asc');         // defines the default order
+        $this->setDefaultOrder('movimentacao_id', 'asc');         // defines the default order
         $this->setLimit(10);
         // $this->setCriteria($criteria) // define a standard filter
 
-        $this->addFilterField('data_mov', '=', 'data_mov'); // filterField, operator, formField
-        
+        $this->addFilterField('dt_mov', '=', 'dt_mov'); // filterField, operator, formField
+        $this->addFilterField('system_unit_id', '=', 'system_unit_id'); // filterField, operator, formField
 
         $this->form = new TForm('form_search_Movimentacao');
         
-        $data_mov = new TDate('data_mov');
-        
+        $dt_mov = new TDate('dt_mov');
+        $system_unit_id = new TDBUniqueSearch('system_unit_id', 'communication', 'SystemUnit', 'id', 'name');
 
-        $data_mov->exitOnEnter();
+        $dt_mov->exitOnEnter();
 
-        $data_mov->setSize('100%');
- 
-        $data_mov->tabindex = -1;
+        $dt_mov->setSize('100%');
+        $system_unit_id->setSize('100%');
 
-        $data_mov->setExitAction( new TAction([$this, 'onSearch'], ['static'=>'1']) );
-       
+        $dt_mov->tabindex = -1;
+        $system_unit_id->tabindex = -1;
+
+        $dt_mov->setExitAction( new TAction([$this, 'onSearch'], ['static'=>'1']) );
+        $system_unit_id->setChangeAction( new TAction([$this, 'onSearch'], ['static'=>'1']) );
         
         // creates a DataGrid
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
@@ -48,29 +50,120 @@ class MovimentacaoList extends TPage
         
 
         // creates the datagrid columns
-        $column_data_mov = new TDataGridColumn('data_mov', 'Data Mov', 'left');
-        $column_valor_apurado_maq = new TDataGridColumn('valor_apurado_maq', 'Valor Apurado Maq', 'right');
+        $column_dt_mov = new TDataGridColumn('dt_mov', 'Data Movimento', 'center');
+        $column_system_unit_id = new TDataGridColumn('system_unit_id', 'Unidade', 'left');
+        $column_valor_apurado_maq = new TDataGridColumn('valor_apurado_maq', 'Apurado Maqui', 'right');
         $column_valor_apurado_talao = new TDataGridColumn('valor_apurado_talao', 'Valor Apurado Talao', 'right');
         $column_pagamento_maq = new TDataGridColumn('pagamento_maq', 'Pagamento Maq', 'right');
         $column_pagamento_talao = new TDataGridColumn('pagamento_talao', 'Pagamento Talao', 'right');
         $column_despesas_valor = new TDataGridColumn('despesas_valor', 'Despesas Valor', 'right');
-        $column_lucro_preju = new TDataGridColumn('lucro_preju', 'Lucro Preju', 'right');
-        $column_retecao = new TDataGridColumn('retecao', 'Retecao', 'right');
+        $column_retecao = new TDataGridColumn('= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} + {pagamento_talao}', 'Retecao', 'right');
+        $column_lucro_preju    = new TDataGridColumn('= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} + {pagamento_talao} + {despesas_valor}', 'Lucro Preju', 'right');
+        //$column_lucro_preju = new TDataGridColumn('lucro_preju', 'Lucro Preju', 'right');
+
+        $column_despesas_justificativa = new TDataGridColumn('despesas_justificativa', 'Despesas Justificativa', 'left');
 
 
         // add the columns to the DataGrid
-        $this->datagrid->addColumn($column_data_mov);
+        $this->datagrid->addColumn($column_dt_mov);
+        $this->datagrid->addColumn($column_system_unit_id);
         $this->datagrid->addColumn($column_valor_apurado_maq);
         $this->datagrid->addColumn($column_valor_apurado_talao);
         $this->datagrid->addColumn($column_pagamento_maq);
         $this->datagrid->addColumn($column_pagamento_talao);
         $this->datagrid->addColumn($column_despesas_valor);
-        $this->datagrid->addColumn($column_lucro_preju);
         $this->datagrid->addColumn($column_retecao);
+        $this->datagrid->addColumn($column_lucro_preju);
+        $this->datagrid->addColumn($column_despesas_justificativa);
+
+
+        // creates the datagrid column actions
+        $column_dt_mov->setAction(new TAction([$this, 'onReload']), ['order' => 'dt_mov']);
+
+        // define the transformer method over image
+        $column_dt_mov->setTransformer( function($value, $object, $row) {
+            if ($value)
+            {
+                try
+                {
+                    $date = new DateTime($value);
+                    return $date->format('d/m/Y');
+                }
+                catch (Exception $e)
+                {
+                    return $value;
+                }
+            }
+            return $value;
+        });
+
+        // define the transformer method over image
+        $column_valor_apurado_maq->setTransformer( function($value, $object, $row) {
+            if (is_numeric($value))
+            {
+                return 'R$ ' . number_format($value, 2, ',', '.');
+            }
+            return $value;
+        });
+
+        // define the transformer method over image
+        $column_valor_apurado_talao->setTransformer( function($value, $object, $row) {
+            if (is_numeric($value))
+            {
+                return 'R$ ' . number_format($value, 2, ',', '.');
+            }
+            return $value;
+        });
+
+        // define the transformer method over image
+        $column_pagamento_maq->setTransformer( function($value, $object, $row) {
+            if (is_numeric($value))
+            {
+                return 'R$ ' . number_format($value, 2, ',', '.');
+            }
+            return $value;
+        });
+
+        // define the transformer method over image
+        $column_pagamento_talao->setTransformer( function($value, $object, $row) {
+            if (is_numeric($value))
+            {
+                return 'R$ ' . number_format($value, 2, ',', '.');
+            }
+            return $value;
+        });
+
+        // define the transformer method over image
+        $column_retecao->setTransformer( function($value, $object, $row) {
+            if (is_numeric($value))
+            {
+                return 'R$ ' . number_format($value, 2, ',', '.');
+            }
+            return $value;
+        });
+
+        // define the transformer method over image
+        $column_lucro_preju->setTransformer( function($value, $object, $row) {
+            if (is_numeric($value))
+            {
+                return 'R$ ' . number_format($value, 2, ',', '.');
+            }
+            return $value;
+        });
+
+        // define the transformer method over image
+        $column_despesas_valor->setTransformer( function($value, $object, $row) {
+            if (is_numeric($value))
+            {
+                return 'R$ ' . number_format($value, 2, ',', '.');
+            }
+            return $value;
+        });
+
 
         
-        $action1 = new TDataGridAction(['MovimentacaoForm', 'onEdit'], ['idmovimentacao'=>'{idmovimentacao}']);
-        $action2 = new TDataGridAction([$this, 'onDelete'], ['idmovimentacao'=>'{idmovimentacao}']);
+        $action1 = new TDataGridAction(['MovimentacaoEditLista', 'onEdit'], ['movimentacao_id'=>'{movimentacao_id}']);
+        $action2 = new TDataGridAction([$this, 'onDelete'], ['movimentacao_id'=>'{movimentacao_id}']);
         
         $this->datagrid->addAction($action1, _t('Edit'),   'far:edit blue');
         $this->datagrid->addAction($action2 ,_t('Delete'), 'far:trash-alt red');
@@ -87,9 +180,11 @@ class MovimentacaoList extends TPage
         
         $tr->add( TElement::tag('td', ''));
         $tr->add( TElement::tag('td', ''));
-        $tr->add( TElement::tag('td', $data_mov));
+        $tr->add( TElement::tag('td', $dt_mov));
+        $tr->add( TElement::tag('td', $system_unit_id));
 
-        $this->form->addField($data_mov);
+        $this->form->addField($dt_mov);
+        $this->form->addField($system_unit_id);
 
         // keep form filled
         $this->form->setData( TSession::getValue(__CLASS__.'_filter_data'));
@@ -110,7 +205,7 @@ class MovimentacaoList extends TPage
         $dropdown->addAction( _t('Save as PDF'), new TAction([$this, 'onExportPDF'], ['register_state' => 'false', 'static'=>'1']), 'far:file-pdf red' );
         $panel->addHeaderWidget( $dropdown );
         
-        $panel->addHeaderActionLink( _t('New'),  new TAction(['MovimentacaoForm', 'onEdit'], ['register_state' => 'false']), 'fa:plus green' );
+        //$panel->addHeaderActionLink( _t('New'),  new TAction(['MovimentacaoForm', 'onEdit'], ['register_state' => 'false']), 'fa:plus green' );
         
         // vertical box container
         $container = new TVBox;
