@@ -57,7 +57,7 @@ class MovimentacaoList extends TPage
         $column_pagamento_maq = new TDataGridColumn('pagamento_maq', 'Pagamento Maq', 'right');
         $column_pagamento_talao = new TDataGridColumn('pagamento_talao', 'Pagamento Talao', 'right');
         $column_despesas_valor = new TDataGridColumn('despesas_valor', 'Despesas Valor', 'right');
-        $column_retecao = new TDataGridColumn('= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} + {pagamento_talao}', 'Retecao', 'right');
+        $column_retecao = new TDataGridColumn('= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} - {pagamento_talao}', 'Retecao','right');
         $column_lucro_preju    = new TDataGridColumn('= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} + {pagamento_talao} + {despesas_valor}', 'Lucro Preju', 'right');
         //$column_lucro_preju = new TDataGridColumn('lucro_preju', 'Lucro Preju', 'right');
 

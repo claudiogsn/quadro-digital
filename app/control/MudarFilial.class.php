@@ -6,7 +6,7 @@ use Adianti\Registry\TSession;
  * MudarFilial Form
  * @author  <your name here>
  */
-class MudarFilial extends TPage
+class MudarFilial extends \Adianti\Control\TWindow
 {
     protected $form; // form
 
@@ -17,7 +17,7 @@ class MudarFilial extends TPage
     public function __construct( $param )
     {
         parent::__construct();
-        parent::setTargetContainer('adianti_right_panel');
+        //parent::setTargetContainer('adianti_right_panel');
 
 
         // creates the form

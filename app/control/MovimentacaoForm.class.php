@@ -65,7 +65,7 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         $this->form->addContent( [$label] );
         $this->form->addFields( [ new TLabel('Apurado Máquina: ') ], [ $valor_apurado_maq ],[ new TLabel('Apurado Talão:') ], [ $valor_apurado_talao ] );
         $this->form->addFields( [ new TLabel('Pagamento Máquina: ') ], [ $pagamento_maq ],[ new TLabel('Pagamento Talão: ') ], [ $pagamento_talao ] );
-        $this->form->addFields( [ new TLabel('Retenção:') ], [ $retecao ],[ new TLabel('Lucro: ') ], [ '= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} + {pagamento_talao}' ] );
+        $this->form->addFields( [ new TLabel('Retenção:') ], [ $retecao ],[ new TLabel('Lucro: ') ], [ $lucro_preju ] );
         $this->form->addFields( [ new TLabel('Valor Despesas: ') ], [ $despesas_valor ],[ new TLabel('Justificativa Despesas: ') ], [ $despesas_justificativa ] );
         $this->form->addFields( [ new TLabel('','#FF0000','14') ], [ $just_edicao ] );
         $this->form->addFields( [ new TLabel('') ], [ $editado ] );
