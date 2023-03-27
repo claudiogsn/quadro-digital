@@ -6,7 +6,7 @@ use Adianti\Registry\TSession;
  * MudarFilial Form
  * @author  <your name here>
  */
-class MudarFilial extends \Adianti\Control\TWindow
+class MudarFilial extends \Adianti\Control\TWindowSmall
 {
     protected $form; // form
 
@@ -40,7 +40,7 @@ class MudarFilial extends \Adianti\Control\TWindow
         //$this->form->addActionLink(_t('New'),  new TAction([$this, 'onEdit']), 'fa:eraser red');
         // vertical box container
         $container = new TVBox;
-        $container->style = 'width: 60%';
+        $container->style = 'width: 100%';
         $container->add($this->form);
         parent::add($container);
     }

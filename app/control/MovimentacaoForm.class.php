@@ -33,8 +33,8 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         $valor_apurado_talao = new TNumeric('valor_apurado_talao', 2, ',', '.', true);
         $pagamento_maq = new TNumeric('pagamento_maq', 2, ',', '.', true);
         $pagamento_talao = new TNumeric('pagamento_talao', 2, ',', '.', true);
-        $retecao = new TNumeric('retecao', 2, ',', '.', true);
-        $lucro_preju = new TNumeric('lucro_preju', 2, ',', '.', true);
+        //$retecao = new TNumeric('retecao', 2, ',', '.', true);
+        //$lucro_preju = new TNumeric('lucro_preju', 2, ',', '.', true);
         $despesas_valor = new TNumeric('despesas_valor', 2, ',', '.', true);
         $despesas_justificativa = new TEntry('despesas_justificativa');
         $just_edicao = new THidden('just_edicao');
@@ -65,7 +65,7 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         $this->form->addContent( [$label] );
         $this->form->addFields( [ new TLabel('Apurado Máquina: ') ], [ $valor_apurado_maq ],[ new TLabel('Apurado Talão:') ], [ $valor_apurado_talao ] );
         $this->form->addFields( [ new TLabel('Pagamento Máquina: ') ], [ $pagamento_maq ],[ new TLabel('Pagamento Talão: ') ], [ $pagamento_talao ] );
-        $this->form->addFields( [ new TLabel('Retenção:') ], [ $retecao ],[ new TLabel('Lucro: ') ], [ $lucro_preju ] );
+        //$this->form->addFields( [ new TLabel('Retenção:') ], [ $retecao ],[ new TLabel('Lucro: ') ], [ $lucro_preju ] );
         $this->form->addFields( [ new TLabel('Valor Despesas: ') ], [ $despesas_valor ],[ new TLabel('Justificativa Despesas: ') ], [ $despesas_justificativa ] );
         $this->form->addFields( [ new TLabel('','#FF0000','14') ], [ $just_edicao ] );
         $this->form->addFields( [ new TLabel('') ], [ $editado ] );
@@ -79,8 +79,8 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         $valor_apurado_talao->addValidation('Valor Apurado Talao', new TRequiredValidator);
         $pagamento_maq->addValidation('Pagamento Maq', new TRequiredValidator);
         $pagamento_talao->addValidation('Pagamento Talao', new TRequiredValidator);
-        $retecao->addValidation('Retecao', new TRequiredValidator);
-        $lucro_preju->addValidation('Lucro Preju', new TRequiredValidator);
+        //$retecao->addValidation('Retecao', new TRequiredValidator);
+        //$lucro_preju->addValidation('Lucro Preju', new TRequiredValidator);
 
         // add valor das sessions
         $unidade = TSession::getValue('userunitid');
@@ -97,8 +97,8 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         $valor_apurado_talao->setSize('40%');
         $pagamento_maq->setSize('40%');
         $pagamento_talao->setSize('40%');
-        $retecao->setSize('40%');
-        $lucro_preju->setSize('40%');
+       // $retecao->setSize('40%');
+        //$lucro_preju->setSize('40%');
         $despesas_valor->setSize('40%');
         $despesas_justificativa->setSize('40%');
         $just_edicao->setSize('40%');
@@ -112,8 +112,8 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         $valor_apurado_talao->setProperty('autocomplete', 'off');
         $pagamento_maq->setProperty('autocomplete', 'off');
         $pagamento_talao->setProperty('autocomplete', 'off');
-        $retecao->setProperty('autocomplete', 'off');
-        $lucro_preju->setProperty('autocomplete', 'off');
+       // $retecao->setProperty('autocomplete', 'off');
+       // $lucro_preju->setProperty('autocomplete', 'off');
         $despesas_valor->setProperty('autocomplete', 'off');
         $despesas_justificativa->setProperty('autocomplete', 'off');
         $just_edicao->setProperty('autocomplete', 'off');

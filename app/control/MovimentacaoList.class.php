@@ -47,7 +47,7 @@ class MovimentacaoList extends TPage
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
         $this->datagrid->style = 'width: 100%';
         // $this->datagrid->enablePopover('Popover', 'Hi <b> {name} </b>');
-        
+
 
         // creates the datagrid columns
         $column_dt_mov = new TDataGridColumn('dt_mov', 'Data Movimento', 'center');
@@ -58,7 +58,8 @@ class MovimentacaoList extends TPage
         $column_pagamento_talao = new TDataGridColumn('pagamento_talao', 'Pagamento Talao', 'right');
         $column_despesas_valor = new TDataGridColumn('despesas_valor', 'Despesas Valor', 'right');
         $column_retecao = new TDataGridColumn('= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} - {pagamento_talao}', 'Retecao','right');
-        $column_lucro_preju    = new TDataGridColumn('= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} + {pagamento_talao} + {despesas_valor}', 'Lucro Preju', 'right');
+        $column_lucro_preju    = new TDataGridColumn('= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} - {pagamento_talao} - {despesas_valor}', 'Lucro Preju','right');
+        //$column_lucro_preju    = new TDataGridColumn('= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} + {pagamento_talao} + {despesas_valor}', 'Lucro Preju', 'right');
         //$column_lucro_preju = new TDataGridColumn('lucro_preju', 'Lucro Preju', 'right');
 
         $column_despesas_justificativa = new TDataGridColumn('despesas_justificativa', 'Despesas Justificativa', 'left');

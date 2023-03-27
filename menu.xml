@@ -101,10 +101,6 @@
         <action>MovimentacaoList</action>
         <icon>fas:list fa-fw fa-fw</icon>
       </menuitem>
-      <menuitem label="MovimentacaoEdit">
-        <action>MovimentacaoEdit</action>
-        <icon>fas:edit fa-fw fa-fw</icon>
-      </menuitem>
     </menu>
   </menuitem>
   <menuitem label="Mudar Unidade">
