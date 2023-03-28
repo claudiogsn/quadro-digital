@@ -129,7 +129,7 @@ class MovimentacaoForm extends \Adianti\Control\TPage
         // create the form actions
         $btn = $this->form->addAction(_t('Save'), new TAction([$this, 'onSave']), 'fa:save');
         $btn->class = 'btn btn-sm btn-primary';
-        $this->form->addActionLink(_t('New'),  new TAction([$this, 'onClear']), 'fa:eraser red');
+        //$this->form->addActionLink(_t('New'),  new TAction([$this, 'onClear']), 'fa:eraser red');
 
         // vertical box container
         $container = new TVBox;

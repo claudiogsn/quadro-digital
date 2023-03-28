@@ -1,12 +1,14 @@
 <?php
 
-use Adianti\Registry\TSession;
+use Adianti\Control\TWindow;
+use Adianti\Widget\Base\TElement;
+use Adianti\Widget\Dialog\TMessage;
 
 /**
  * MovimentacaoList Listing
- * @author  <your name here>
+ * @author  Claudio Gomes
  */
-class MovimentacaoList2 extends TPage
+class MovimentacaoList extends TPage
 {
     private $form; // form
     private $datagrid; // listing
@@ -23,35 +25,27 @@ class MovimentacaoList2 extends TPage
     {
         parent::__construct();
 
-        $IDUnidade = TSession::getValue('userunitid');
-        $NomeUnidade = TSession::getValue('userunitname');
-
         // creates the form
         $this->form = new BootstrapFormBuilder('form_search_Movimentacao');
         $this->form->setFormTitle('Movimentacao');
 
 
-
         // create the form fields
-        $dt_mov = new TDate('dt_mov');
-        $system_unit_id = new TDBUniqueSearch('system_unit_id', 'communication', 'SystemUnit', 'id', 'name');
-        $system_unit_id->enableSearch();
+        $dt_mov = new TEntry('dt_mov');
         //$system_unit_id = new TEntry('system_unit_id');
-        //$unidade = TSession::getValue('userunitid');
-        //$system_unit_id->setValue($unidade);
-
+        $system_unit_id = new THidden('system_unit_id');
+        $unidade = TSession::getValue('userunitid');
+        $system_unit_id->setValue($unidade);
 
 
         // add the fields
         $this->form->addFields( [ new TLabel('Data de Movimento') ], [ $dt_mov ] );
-        $this->form->addFields( [ new TLabel('Unidade') ], [ $system_unit_id ] );
+        $this->form->addFields( [ new TLabel('') ], [ $system_unit_id ] );
 
 
         // set sizes
         $dt_mov->setSize('100%');
-        //$system_unit_id->setSize('100%');
-
-
+        $system_unit_id->setSize('100%');
 
 
         // keep the form filled during navigation with session data
@@ -70,31 +64,29 @@ class MovimentacaoList2 extends TPage
 
 
         // creates the datagrid columns
-        $column_dt_mov = new TDataGridColumn('dt_mov', 'Dt Mov', 'left');
-        $column_system_unit_id = new TDataGridColumn('system_unit_id', 'System Unit Id', 'right');
-        $column_valor_apurado_maq = new TDataGridColumn('valor_apurado_maq', 'Valor Apurado Maq', 'right');
-        $column_valor_apurado_talao = new TDataGridColumn('valor_apurado_talao', 'Valor Apurado Talao', 'right');
-        $column_pagamento_maq = new TDataGridColumn('pagamento_maq', 'Pagamento Maq', 'right');
-        $column_pagamento_talao = new TDataGridColumn('pagamento_talao', 'Pagamento Talao', 'right');
-        $column_retecao = new TDataGridColumn('retecao', 'Retecao', 'right');
-        $column_lucro_preju    = new TDataGridColumn('= ({valor_apurado_maq} + 100 + {valor_apurado_talao}) - ({pagamento_maq} + {pagamento_talao} + {despesa}))', 'Lucro Preju', 'right');
-        //$column_lucro_preju = new TDataGridColumn('lucro_preju', 'Lucro Preju', 'right');
-        $column_despesas_valor = new TDataGridColumn('despesas_valor', 'Despesas Valor', 'right');
+        $column_dt_mov = new TDataGridColumn('dt_mov', 'Data Movimento', 'left');
+        $column_system_unit_id = new TDataGridColumn('system_unit->name', 'System Unit Id', 'left');
+        $column_valor_apurado_maq = new TDataGridColumn('valor_apurado_maq', 'Apurado Máquina', 'left');
+        $column_valor_apurado_talao = new TDataGridColumn('valor_apurado_talao', 'Apurado Talão', 'left');
+        $column_pagamento_maq = new TDataGridColumn('pagamento_maq', 'Pagamento Máquina', 'left');
+        $column_pagamento_talao = new TDataGridColumn('pagamento_talao', 'Pagamento Talão', 'left');
+        $column_despesas_valor = new TDataGridColumn('despesas_valor', 'Valor Despesas', 'left');
+        $column_retecao = new TDataGridColumn('retecao', 'Retenção', 'left');
+        $column_lucro_preju = new TDataGridColumn('lucro_preju', 'Lucro', 'left');
+
 
 
         // add the columns to the DataGrid
         $this->datagrid->addColumn($column_dt_mov);
-        $this->datagrid->addColumn($column_system_unit_id);
+        //$this->datagrid->addColumn($column_system_unit_id);
         $this->datagrid->addColumn($column_valor_apurado_maq);
         $this->datagrid->addColumn($column_valor_apurado_talao);
         $this->datagrid->addColumn($column_pagamento_maq);
         $this->datagrid->addColumn($column_pagamento_talao);
+        $this->datagrid->addColumn($column_despesas_valor);
         $this->datagrid->addColumn($column_retecao);
         $this->datagrid->addColumn($column_lucro_preju);
-        $this->datagrid->addColumn($column_despesas_valor);
 
-        $column_lucro_preju->setTotalFunction( function($values) {
-            return array_sum((array) $values);
 
 
         // creates the datagrid column actions
@@ -187,6 +179,9 @@ class MovimentacaoList2 extends TPage
         $this->pageNavigation->setAction(new TAction([$this, 'onReload']));
         $this->pageNavigation->setWidth($this->datagrid->getWidth());
 
+
+        //$this->pageNavigation->addAction( _t('Save as PDF'), new TAction([$this, 'onExportPDF'], ['register_state' => 'false', 'static'=>'1']), 'far:file-pdf red' );
+
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
@@ -229,6 +224,27 @@ class MovimentacaoList2 extends TPage
         }
     }
 
+    public function onExportPDF($param)
+    {
+        try
+        {
+            $output = 'app/output/'.uniqid().'.pdf';
+            $this->exportToPDF($output);
+
+            $window = TWindow::create('Export', 0.8, 0.8);
+            $object = new TElement('object');
+            $object->{'data'}  = $output;
+            $object->{'type'}  = 'application/pdf';
+            $object->{'style'} = "width: 100%; height:calc(100% - 10px)";
+            $window->add($object);
+            $window->show();
+        }
+        catch (Exception $e)
+        {
+            new TMessage('error', $e->getMessage());
+        }
+    }
+
     /**
      * Register the filter in the session
      */
@@ -242,7 +258,7 @@ class MovimentacaoList2 extends TPage
         TSession::setValue(__CLASS__.'_filter_system_unit_id',   NULL);
 
         if (isset($data->dt_mov) AND ($data->dt_mov)) {
-            $filter = new TFilter('dt_mov', '=', $data->dt_mov); // create the filter
+            $filter = new TFilter('dt_mov', 'like', "%{$data->dt_mov}%"); // create the filter
             TSession::setValue(__CLASS__.'_filter_dt_mov',   $filter); // stores the filter in the session
         }
 
@@ -280,6 +296,7 @@ class MovimentacaoList2 extends TPage
             $limit = 10;
             // creates a criteria
             $criteria = new TCriteria;
+            $criteria->add(new TFilter('system_unit_id ','=',  TSession::getValue('userunitid')));
 
             // default order
             if (empty($param['order']))

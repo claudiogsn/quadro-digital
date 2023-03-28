@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<design>
+    <page>
+        <format>a4</format>
+        <orientation>L</orientation>
+    </page>
+    <rectangle id="1">
+        <class>Rectangle</class>
+        <x>8</x>
+        <y>96</y>
+        <width>822</width>
+        <height>490</height>
+        <fillcolor>#FFFFFF</fillcolor>
+        <linecolor>#000000</linecolor>
+        <linewidth>1</linewidth>
+        <shadowoffset>0</shadowoffset>
+        <shadowcolor>#000000</shadowcolor>
+    </rectangle>
+    <text id="2">
+        <class>Text</class>
+        <x>252</x>
+        <y>40</y>
+        <font>Arial</font>
+        <size>13</size>
+        <text>RELATORIO DE MOVIMENTACAO DE CAIXA</text>
+        <color>#000000</color>
+        <shadowoffset>0</shadowoffset>
+        <shadowcolor>#000000</shadowcolor>
+    </text>
+    <anchor id="3">
+        <class>Anchor</class>
+        <x>368</x>
+        <y>68</y>
+        <name>SystemUnit</name>
+    </anchor>
+    <image id="4">
+        <class>Image</class>
+        <x>16</x>
+        <y>12</y>
+        <width>66</width>
+        <height>66</height>
+        <file>C:\wamp64\www\quadro-digital\app\images\icon.png</file>
+    </image>
+</design>

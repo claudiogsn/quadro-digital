@@ -33,59 +33,48 @@ class MovimentacaoEditLista extends \Adianti\Control\TPage
         $valor_apurado_talao = new TNumeric('valor_apurado_talao', 2, ',', '.', true);
         $pagamento_maq = new TNumeric('pagamento_maq', 2, ',', '.', true);
         $pagamento_talao = new TNumeric('pagamento_talao', 2, ',', '.', true);
-        $retecao = new TNumeric('retecao', 2, ',', '.', true);
-        $lucro_preju = new TNumeric('lucro_preju', 2, ',', '.', true);
         $despesas_valor = new TNumeric('despesas_valor', 2, ',', '.', true);
         $despesas_justificativa = new TEntry('despesas_justificativa');
         $just_edicao = new TEntry('just_edicao');
-        $editado = new THidden('editado');
         $system_user_id = new THidden('system_user_id');
         $user_edit = new THidden('user_edit');
         $created_at = new THidden('created_at');
         $edited_at = new THidden('edited_at');
 
 
-
-
-        //definir icones
-        $just_edicao->setInnerIcon(new TImage('fa:money blue'), 'left');
-        $valor_apurado_talao->setInnerIcon(new TImage('fa:money black'), 'left');
-        $pagamento_maq->setInnerIcon(new TImage('fa:money black'), 'left');
-        $pagamento_talao->setInnerIcon(new TImage('fa:money black'), 'left');
-
-        //Validations
-        $dt_mov->setMask('dd/mm/yyyy');
-
-
-
         // add the fields
         $this->form->addFields( [ new TLabel('') ], [ $movimentacao_id ] );
         $this->form->addFields( [ new THidden('unidade') ], [ $system_unit_id ] );
         $this->form->addFields( [ new TLabel('Data Movimento: ','#000000','14') ], [ $dt_mov ]);
+
         $label = new TLabel('', '#000000', 12, 'bi');
         $label->style='text-align:center;width:85%';
         $this->form->addContent( [$label] );
+
         $label = new TLabel('', '#7D78B6', 12, 'bi');
         $label->style='text-align:center;border-bottom:1px solid #c0c0c0;width:100%';
         $this->form->addContent( [$label] );
+
         $label = new TLabel('', '#000000', 12, 'bi');
         $label->style='text-align:center;width:85%';
         $this->form->addContent( [$label] );
+
         $this->form->addFields( [ new TLabel('Apurado Máquina: ') ], [ $valor_apurado_maq ],[ new TLabel('Apurado Talão:') ], [ $valor_apurado_talao ] );
         $this->form->addFields( [ new TLabel('Pagamento Máquina: ') ], [ $pagamento_maq ],[ new TLabel('Pagamento Talão: ') ], [ $pagamento_talao ] );
-        $this->form->addFields( [ new TLabel('Retenção:') ], [ $retecao ],[ new TLabel('Lucro: ') ], [ $lucro_preju ] );
         $this->form->addFields( [ new TLabel('Valor Despesas: ') ], [ $despesas_valor ],[ new TLabel('Justificativa Despesas: ') ], [ $despesas_justificativa ] );
+
         $label = new TLabel('', '#000000', 12, 'bi');
         $label->style='text-align:center;width:85%';
         $this->form->addContent( [$label] );
+
         $label = new TLabel('', '#000000', 12, 'bi');
         $label->style='text-align:center;width:85%';
         $this->form->addContent( [$label] );
+
         $just = new TLabel('Justificativa Edição:','#FF0000',14,'');
         $just ->style='text-align:center;';
         $this->form->addFields([$just],[ $just_edicao ] );
-        //$this->form->addFields( [ new TLabel('Justificativa Edição:','#FF0000','14') ], [ $just_edicao ] );
-        $this->form->addFields( [ new TLabel('') ], [ $editado ] );
+
         $this->form->addFields( [ new THidden('user') ], [$system_user_id ] );
         $this->form->addFields( [ new TLabel('') ], [ $user_edit ] );
         $this->form->addFields( [ new TLabel('') ], [ $created_at ] );
@@ -98,43 +87,27 @@ class MovimentacaoEditLista extends \Adianti\Control\TPage
         $valor_apurado_talao->addValidation('Valor Apurado Talao', new TRequiredValidator);
         $pagamento_maq->addValidation('Pagamento Maq', new TRequiredValidator);
         $pagamento_talao->addValidation('Pagamento Talao', new TRequiredValidator);
-        $retecao->addValidation('Retecao', new TRequiredValidator);
-        $lucro_preju->addValidation('Lucro Preju', new TRequiredValidator);
         $just_edicao->addValidation('Justificativa Edição', new TRequiredValidator);
-
-
-        // add valor das sessions
-        $unidade = TSession::getValue('userunitid');
-        $system_unit_id->setValue($unidade);
-        $usuario = TSession::getValue('userid');
-        $system_user_id->setValue($usuario);
 
 
         // set sizes
         $movimentacao_id->setSize('25%');
         $dt_mov->setSize('50%');
-
         $valor_apurado_maq->setSize('80%');
         $valor_apurado_talao->setSize('80%');
         $pagamento_maq->setSize('80%');
         $pagamento_talao->setSize('80%');
-        $retecao->setSize('80%');
-        $lucro_preju->setSize('80%');
         $despesas_valor->setSize('80%');
         $despesas_justificativa->setSize('80%');
         $just_edicao->setSize('80%');
-        $editado->setSize('80%');
-        $user_edit->setSize('80%');
-        $created_at->setSize('80%');
-        $edited_at->setSize('80%');
+
+
 
         // desativar complete
         $valor_apurado_maq->setProperty('autocomplete', 'off');
         $valor_apurado_talao->setProperty('autocomplete', 'off');
         $pagamento_maq->setProperty('autocomplete', 'off');
         $pagamento_talao->setProperty('autocomplete', 'off');
-        $retecao->setProperty('autocomplete', 'off');
-        $lucro_preju->setProperty('autocomplete', 'off');
         $despesas_valor->setProperty('autocomplete', 'off');
         $despesas_justificativa->setProperty('autocomplete', 'off');
         $just_edicao->setProperty('autocomplete', 'off');
@@ -182,9 +155,9 @@ class MovimentacaoEditLista extends \Adianti\Control\TPage
 
             $object = new Movimentacao;  // create an empty object
             $object->fromArray( (array) $data); // load the object with data
-            $object->dt_mov = DateTime::createFromFormat('d/m/Y', $object->dt_mov)->format( 'Y-m-d' );
-            //$idmovimento = $object->dt_mov.$object->system_unit_id;
-            //$object->movimentacao_id = str_replace('-','',$idmovimento);
+            $object->user_edit = TSession::getValue('userid');
+            $object->edited_at =date("Y-m-d h:i:s");
+
             $object->store(); // save the object
 
             // get the generated movimentacao_id
