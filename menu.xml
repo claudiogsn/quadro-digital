@@ -93,6 +93,10 @@
   <menuitem label="Movimentação">
     <icon>fas:chart-area fa-fw fa-fw</icon>
     <menu>
+      <menuitem label="Dashboard Faturamento">
+        <action>DashboardUnit</action>
+        <icon>fas:chart-line fa-fw fa-fw</icon>
+      </menuitem>
       <menuitem label="Lançar Movimento">
         <action>MovimentacaoForm</action>
         <icon>fas:money-bill-alt fa-fw fa-fw</icon>

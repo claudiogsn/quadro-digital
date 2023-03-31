@@ -110,24 +110,9 @@
         <aside id="leftsidebar" class="sidebar">
             <!-- User Info -->
             <div class="user-info">
-                <div class="image">
-                    <img src="app/images/photos/{login}.jpg" onError="this.onerror=null;this.src='app/templates/{template}/images/user.png';" width="48" height="48" alt="User" />
-                </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{username}</div>
                     <div class="email">{usermail}</div>
-                    <div class="btn-group user-helper-dropdown">
-                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a generator="adianti" href="index.php?class=SystemProfileView&adianti_open_tab=1&adianti_tab_name=_t{Profile}"><i class="material-icons">person</i>_t{Profile}</a></li>
-                            <li role="seperator" class="divider"></li>
-                            <li><a generator="adianti" href="index.php?class=SystemMessageList&method=filterInbox&adianti_open_tab=1&adianti_tab_name=_t{Messages}"><i class="material-icons">email</i>_t{Messages}</a></li>
-                            <li><a generator="adianti" href="index.php?class=SystemNotificationList&adianti_open_tab=1&adianti_tab_name=_t{Notifications}"><i class="material-icons">notifications</i>_t{Notifications}</a></li>
-                            <li role="seperator" class="divider"></li>
-                            <li><a href="index.php?class=LoginForm&method=reloadPermissions&static=1"><i class="material-icons">cached</i>_t{Reload}</a></li>
-                            <li><a generator="adianti" href="index.php?class=LoginForm&method=onLogout&static=1"><i class="material-icons">input</i>Logout</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
             <!-- #User Info -->
@@ -139,7 +124,7 @@
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    {userunitid} - {userunitname}
+                   {userunitname}
                     <!--[IFADMIN]-->
                     <a style="cursor:pointer; color: teal !important" generator="adianti" href="index.php?class=SystemModulesCheckView&adianti_open_tab=1&adianti_tab_name=PHP%20Modules"> <i class="fa fa-code" aria-hidden="true"></i> PHP Modules </a> &nbsp;&nbsp;
                     <span style="cursor:pointer; color: teal !important" onclick="Adianti.showDebugPanel()"> <i class="fa fa-window-maximize" aria-hidden="true"></i> Debug Console </span>

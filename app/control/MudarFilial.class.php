@@ -35,10 +35,6 @@ class MudarFilial extends \Adianti\Control\TWindowSmall
         }
         // create the form actions
         $this->form->addAction('Mudar', new TAction([$this, 'onSave']), 'fa:save green');
-        //$btn = $this->form->addAction(_t('Save'), new TAction([$this, 'onSave']), 'fa:save');
-        //$btn->class = 'btn btn-sm btn-primary';
-        //$this->form->addActionLink(_t('New'),  new TAction([$this, 'onEdit']), 'fa:eraser red');
-        // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
         $container->add($this->form);

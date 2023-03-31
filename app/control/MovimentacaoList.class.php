@@ -6,6 +6,7 @@ use Adianti\Widget\Dialog\TMessage;
 use Adianti\Core\AdiantiCoreTranslator;
 use Adianti\Control\TPage;
 use Adianti\Database\TTransaction;
+use Adianti\Widget\Template\THtmlRenderer;
 
 /**
  * MovimentacaoList Listing
@@ -32,7 +33,7 @@ class MovimentacaoList extends TPage
 
         // creates the form
         $this->form = new BootstrapFormBuilder('form_search_Movimentacao');
-        $this->form->setFormTitle('Movimentacao');
+        $this->form->setFormTitle('Selecionar Mês');
 
 
         // create the form fields
@@ -69,8 +70,9 @@ class MovimentacaoList extends TPage
         $column_pagamento_maq = new TDataGridColumn('pagamento_maq', 'Pagamento Máquina', 'left');
         $column_pagamento_talao = new TDataGridColumn('pagamento_talao', 'Pagamento Talão', 'left');
         $column_despesas_valor = new TDataGridColumn('despesas_valor', 'Valor Despesas', 'left');
-        $column_retecao = new TDataGridColumn('= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} - {pagamento_talao}', 'Retenção','right');
-        $column_lucro_preju    = new TDataGridColumn('= {valor_apurado_maq} + {valor_apurado_talao} - {pagamento_maq} - {pagamento_talao} - {despesas_valor}', 'Lucro','right');
+        $column_retecao = new TDataGridColumn('retencao','Retenção','center');
+        $column_lucro_preju    = new TDataGridColumn('lucro_preju', 'Lucro','center');
+
 
 
 
@@ -80,9 +82,12 @@ class MovimentacaoList extends TPage
         $this->datagrid->addColumn($column_valor_apurado_talao);
         $this->datagrid->addColumn($column_pagamento_maq);
         $this->datagrid->addColumn($column_pagamento_talao);
-        $this->datagrid->addColumn($column_despesas_valor);
         $this->datagrid->addColumn($column_retecao);
+        $this->datagrid->addColumn($column_despesas_valor);
         $this->datagrid->addColumn($column_lucro_preju);
+
+
+
 
 
 
@@ -114,6 +119,10 @@ class MovimentacaoList extends TPage
             }
             return $value;
         });
+        $column_valor_apurado_maq->setTotalFunction( function($values) {
+            return array_sum((array) $values);
+        });
+
 
         // define the transformer method over image
         $column_valor_apurado_talao->setTransformer( function($value, $object, $row) {
@@ -122,6 +131,9 @@ class MovimentacaoList extends TPage
                 return 'R$ ' . number_format($value, 2, ',', '.');
             }
             return $value;
+        });
+        $column_valor_apurado_talao->setTotalFunction( function($values) {
+            return array_sum((array) $values);
         });
 
         // define the transformer method over image
@@ -132,6 +144,9 @@ class MovimentacaoList extends TPage
             }
             return $value;
         });
+        $column_pagamento_maq->setTotalFunction( function($values) {
+            return array_sum((array) $values);
+        });
 
         // define the transformer method over image
         $column_pagamento_talao->setTransformer( function($value, $object, $row) {
@@ -140,6 +155,9 @@ class MovimentacaoList extends TPage
                 return 'R$ ' . number_format($value, 2, ',', '.');
             }
             return $value;
+        });
+        $column_pagamento_talao->setTotalFunction( function($values) {
+            return array_sum((array) $values);
         });
 
         // define the transformer method over image
@@ -150,6 +168,9 @@ class MovimentacaoList extends TPage
             }
             return $value;
         });
+        $column_retecao->setTotalFunction( function($values) {
+            return array_sum((array) $values);
+        });
 
         $column_despesas_valor->setTransformer( function($value, $object, $row) {
             if (is_numeric($value))
@@ -157,6 +178,9 @@ class MovimentacaoList extends TPage
                 return 'R$ ' . number_format($value, 2, ',', '.');
             }
             return $value;
+        });
+        $column_despesas_valor->setTotalFunction( function($values) {
+            return array_sum((array) $values);
         });
 
         // define the transformer method over image
@@ -167,14 +191,20 @@ class MovimentacaoList extends TPage
             }
             return $value;
         });
+        $column_lucro_preju->setTotalFunction( function($values) {
+            return array_sum((array) $values);
+        });
+
+
+
 
 
 
         $action1 = new TDataGridAction(['MovimentacaoEditLista', 'onEdit'], ['movimentacao_id'=>'{movimentacao_id}']);
-        $action2 = new TDataGridAction([$this, 'onDelete'], ['movimentacao_id'=>'{movimentacao_id}']);
+        //$action2 = new TDataGridAction([$this, 'onDelete'], ['movimentacao_id'=>'{movimentacao_id}']);
 
         $this->datagrid->addAction($action1, _t('Edit'),   'far:edit blue');
-        $this->datagrid->addAction($action2 ,_t('Delete'), 'far:trash-alt red');
+        //$this->datagrid->addAction($action2 ,_t('Delete'), 'far:trash-alt red');
 
         // create the datagrid model
         $this->datagrid->createModel();
@@ -184,10 +214,12 @@ class MovimentacaoList extends TPage
         $this->pageNavigation->setAction(new TAction([$this, 'onReload']));
         $this->pageNavigation->setWidth($this->datagrid->getWidth());
 
+        $data_rotulo =new DateTime( $this->form->getData()->dt_mov);
 
-        $panel = new TPanelGroup('Relatorio de Movimentações');
+        $panel = new TPanelGroup('Relatorio de Movimentações - '.$data_rotulo->format('m/Y'));
         $panel->add($this->datagrid);
         $panel->addFooter($this->pageNavigation);
+
         $panel->addHeaderActionLink( 'Exportar PDF', new TAction([$this, 'onExportPDF'], ['register_state' => 'false', 'static'=>'1']), 'far:file-pdf fa-fw red' );
 
         // vertical box container
@@ -195,6 +227,7 @@ class MovimentacaoList extends TPage
         $container->style = 'width: 100%';
         $container->add($this->form);
         $container->add(TPanelGroup::pack('', $panel));
+        //$container->add($html);
 
         parent::add($container);
     }
@@ -309,7 +342,7 @@ class MovimentacaoList extends TPage
 
             // creates a repository for Movimentacao
             $repository = new TRepository('Movimentacao');
-            $limit = 10;
+            $limit = 31;
             // creates a criteria
             $criteria = new TCriteria;
             $criteria->add(new TFilter('system_unit_id ','=',  TSession::getValue('userunitid')));
@@ -317,7 +350,7 @@ class MovimentacaoList extends TPage
             // default order
             if (empty($param['order']))
             {
-                $param['order'] = 'movimentacao_id';
+                $param['order'] = 'dt_mov';
                 $param['direction'] = 'asc';
             }
             $criteria->setProperties($param); // order, offset
